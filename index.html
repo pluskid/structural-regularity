@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Characterizing Structural Regularities of Labeled Data in Overparameterized Models</title>
+    <link rel="stylesheet" href="bulma.0.9.0.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script>
+      function change_image_url(tag) {
+        if (tag == 'imagenet1' || tag == 'imagenet2') {
+          var x = document.getElementById(tag + "Sel").value;
+          document.getElementById(tag + "ImgTop").src = "imgs/imagenet-top-class" + x + ".jpg";
+          document.getElementById(tag + "ImgBot").src = "imgs/imagenet-bot-class" + x + ".jpg";
+          document.getElementById(tag + "ImgHist").src = "imgs/imagenet-hist-class" + x + ".svg";
+        } else {
+          var x = document.getElementById(tag + "Sel").value;
+          document.getElementById(tag + "Img").src = "imgs/" + tag + "-class" + x + ".png";
+        }
+      }
+    </script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Characterizing Structural Regularities of Labeled Data in Overparameterized Models
+      </h1>
+      <h2 class="subtitle">
+        Ziheng Jiang*, Chiyuan Zhang*, Kunal Talwar,  Michael C. Mozer
+        <span class="has-text-gray" style="float: right;">*Equal contribution</span>
+      </h2>
+
+      <div class="content">
+        <p>
+          <b>Abstract</b>:  Human learners appreciate that observations usually form hierarchies of regularities and sub-regularities. 
+          For example, English verbs have irregular cases that must be memorized (e.g., go ↦ went) and regular cases that generalize well
+          (e.g., kiss ↦ kissed, miss ↦ missed). Likewise, deep neural networks have the capacity to memorize rare or irregular forms but 
+          nonetheless generalize across instances that share common patterns or structures. We analyze how individual instances are treated 
+          by a model via  a <em>consistency score</em>. The score is the expected accuracy of a particular architecture for a held-out 
+          instance on a training set of a given size sampled from the data distribution. We obtain empirical estimates of this score 
+          for individual instances in multiple data sets, and we show that the score identifies out-of-distribution and mislabeled examples 
+          at one end of the continuum and regular examples at the other end. We explore two categories of proxies to the consistency score: 
+          pairwise distance based proxy and the training statistics based proxies. We conclude with two applications using C-scores to help 
+          understand the dynamics of representation learning and filter out outliers, and discussions of other potential applications such as curriculum learning, and active data collection.
+        </p>
+        <p>
+          <b>Pre-computed C-scores</b>: We provide pre-computed C-score for download below. The files are in Numpy's data format exported via <code>numpy.savez</code>. 
+          For CIFAR-10 and CIFAR-100, the exported file contains two arrays <code>labels</code> and <code>scores</code>. Both arrays are stored in the order of training 
+          examples as defined by the <a href="https://www.cs.toronto.edu/~kriz/cifar.html">original datasets</a>. The data loading tools provided in some deep learning 
+          library might not be following the original data example orders, so we provided the <code>labels</code> array for easy sanity check of the data ordering.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <!-- MNIST -->
+    <div class="container">
+      <h1 class="title is-4 mb-1">MNIST</h1>
+      <p class="mb-4">
+        We show top-ranking (top row) and bottom-ranking (bottom row) examples from <a href="http://yann.lecun.com/exdb/mnist/">MNIST</a> by C-scores computed via multi-layer perceptrons.
+        Use the dropdown menu to select the class to show.
+      </p>
+    </div>
+    <div class="container">
+      <article class="media">
+        <div class="select mr-2">
+          <select id="mnistSel" onchange="change_image_url('mnist')">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+          </select>
+        </div>
+        <div class="media-content">
+          <figure class="image is-fullwidth">
+            <img id="mnistImg" src="imgs/mnist-class0.png">
+          </figure>
+        </div>
+      </article>
+    </div>
+
+    <!-- CIFAR-10 -->
+    <div class="container">
+      <hr>
+      <h1 class="title is-4 mb-1">CIFAR-10</h1>
+      <p class="mb-4">
+        We show top-ranking (top row) and bottom-ranking (bottom row) examples from <a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a> by C-scores computed via Inception models.
+        Use the dropdown menu to select the class to show. The pre-computed C-scores can be downloaded from <a href="cscores/cifar10-cscores-orig-order.npz">here</a>.
+      </p>
+      <article class="media">
+        <div class="select mr-2">
+          <select id="cifar10Sel" onchange="change_image_url('cifar10')">
+            <option value="0">airplane</option>
+            <option value="1">automobile</option>
+            <option value="2">bird</option>
+            <option value="3">cat</option>
+            <option value="4">deer</option>
+            <option value="5">dog</option>
+            <option value="6">frog</option>
+            <option value="7">horse</option>
+            <option value="8">ship</option>
+            <option value="9">truck</option>
+          </select>
+        </div>
+        <div class="media-content">
+          <figure class="image is-fullwidth">
+            <img id="cifar10Img" src="imgs/cifar10-class0.png">
+          </figure>
+        </div>
+      </article>
+    </div>
+
+    <!-- CIFAR-100 -->
+    <div class="container">
+      <hr>
+      <h1 class="title is-4 mb-1">CIFAR-100</h1>
+      <p class="mb-4">
+        We show top-ranking (top row) and bottom-ranking (bottom row) examples from <a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-100</a> by C-scores computed via Inception models.
+        Use the dropdown menu to select the class to show. The pre-computed C-scores can be downloaded from <a href="cscores/cifar100-cscores-orig-order.npz">here</a>.
+      </p>
+      <article class="media">
+        <div class="select mr-2">
+          <select id="cifar100Sel" onchange="change_image_url('cifar100')">
+            <option value="0">apple</option>
+            <option value="1">aquarium fish</option>
+            <option value="2">baby</option>
+            <option value="3">bear</option>
+            <option value="4">beaver</option>
+            <option value="5">bed</option>
+            <option value="6">bee</option>
+            <option value="7">beetle</option>
+            <option value="8">bicycle</option>
+            <option value="9">bottle</option>
+            <option value="10">bowl</option>
+            <option value="11">boy</option>
+            <option value="12">bridge</option>
+            <option value="13">bus</option>
+            <option value="14">butterfly</option>
+            <option value="15">camel</option>
+            <option value="16">can</option>
+            <option value="17">castle</option>
+            <option value="18">caterpillar</option>
+            <option value="19">cattle</option>
+            <option value="20">chair</option>
+            <option value="21">chimpanzee</option>
+            <option value="22">clock</option>
+            <option value="23">cloud</option>
+            <option value="24">cockroach</option>
+            <option value="25">couch</option>
+            <option value="26">crab</option>
+            <option value="27">crocodile</option>
+            <option value="28">cup</option>
+            <option value="29">dinosaur</option>
+            <option value="30">dolphin</option>
+            <option value="31">elephant</option>
+            <option value="32">flatfish</option>
+            <option value="33">forest</option>
+            <option value="34">fox</option>
+            <option value="35">girl</option>
+            <option value="36">hamster</option>
+            <option value="37">house</option>
+            <option value="38">kangaroo</option>
+            <option value="39">keyboard</option>
+            <option value="40">lamp</option>
+            <option value="41">lawn mower</option>
+            <option value="42">leopard</option>
+            <option value="43">lion</option>
+            <option value="44">lizard</option>
+            <option value="45">lobster</option>
+            <option value="46">man</option>
+            <option value="47">maple tree</option>
+            <option value="48">motorcycle</option>
+            <option value="49">mountain</option>
+            <option value="50">mouse</option>
+            <option value="51">mushroom</option>
+            <option value="52">oak tree</option>
+            <option value="53">orange</option>
+            <option value="54">orchid</option>
+            <option value="55">otter</option>
+            <option value="56">palm tree</option>
+            <option value="57">pear</option>
+            <option value="58">pickup truck</option>
+            <option value="59">pine tree</option>
+            <option value="60">plain</option>
+            <option value="61">plate</option>
+            <option value="62">poppy</option>
+            <option value="63">porcupine</option>
+            <option value="64">possum</option>
+            <option value="65">rabbit</option>
+            <option value="66">raccoon</option>
+            <option value="67">ray</option>
+            <option value="68">road</option>
+            <option value="69">rocket</option>
+            <option value="70">rose</option>
+            <option value="71">sea</option>
+            <option value="72">seal</option>
+            <option value="73">shark</option>
+            <option value="74">shrew</option>
+            <option value="75">skunk</option>
+            <option value="76">skyscraper</option>
+            <option value="77">snail</option>
+            <option value="78">snake</option>
+            <option value="79">spider</option>
+            <option value="80">squirrel</option>
+            <option value="81">streetcar</option>
+            <option value="82">sunflower</option>
+            <option value="83">sweet pepper</option>
+            <option value="84">table</option>
+            <option value="85">tank</option>
+            <option value="86">telephone</option>
+            <option value="87">television</option>
+            <option value="88">tiger</option>
+            <option value="89">tractor</option>
+            <option value="90">train</option>
+            <option value="91">trout</option>
+            <option value="92">tulip</option>
+            <option value="93">turtle</option>
+            <option value="94">wardrobe</option>
+            <option value="95">whale</option>
+            <option value="96">willow tree</option>
+            <option value="97">wolf</option>
+            <option value="98">woman</option>
+            <option value="99">worm</option>            
+          </select>
+        </div>
+        <div class="media-content">
+          <figure class="image is-fullwidth">
+            <img id="cifar100Img" src="imgs/cifar100-class0.png">
+          </figure>
+        </div>
+      </article>
+    </div>
+
+    <!-- ImageNet -->
+    <div class="container">
+      <hr>
+      <h1 class="title is-4 mb-1">ImageNet</h1>
+      <div class="columns mb-4">
+        <div class="column">
+          <div class="content">
+            <p>
+              We show examples from ImageNet by C-scores computed via ResNet50 models. For each class, the top 2 rows
+              show the top ranking examples, and the bottom 2 rows show the bottom ranking examples. In the middle, a
+              histogram of the C-scores of all the training examples in this class is show, in both log scale and linear
+              scale.             
+            </p>
+            <p>
+              Because ImageNet contains 1000 classes, we select a subset to visualize.
+              The first subset contains a few <em>representative classes</em>, as indicated 
+              by the <span class="tag is-danger is-light">★</span> in the figure here. <em>yellow lady's slipper</em> is a typical regular class, where 
+              most of the instances are highly regular and even the
+              bottom ranking examples show some color consistency. <em>oscilloscope</em>, <em>green snake</em>, <em>Norwich terrier</em> and <em>weasel</em>, 
+              ordered by the average C-scores in each class, represent most of the classes in the ImageNet dataset: they contain both high regular 
+              top-ranking examples and highly irregular bottom-ranking examples. Finally, <em>projectile</em> is a typical irregular class, where the 
+              instances are extremely diversified.
+              The second subset contains 100 randomly sampled classes.
+            </p>
+            <p>
+              The pre-computed C-scores can be downloaded from <a href="cscores/imagenet-cscores-with-filename.npz">here</a>. 
+              Since there is no well defined example ordering, we order the exported scores arbitrarily, while include the filename of each example to help identify the example-score mapping. 
+              More specifically, the exported file for ImageNet contains three arrays <code>labels</code>, <code>scores</code> and <code>filenames</code>. Again we include <code>labels</code> for easy sanity checking.
+            </p>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <figure class="image is-fullwidth">
+            <img src="imgs/imagenet-all-classes.svg">
+          </figure>
+        </div>
+      </div>
+      <h2 class="title is-5 mb-2">A few representative classes</h2>
+      <div class="select" onchange="change_image_url('imagenet1')">
+        <select id="imagenet1Sel">
+          <option value="186">Norwich terrier</option>
+          <option value="744">projectile, missile</option>
+          <option value="356">weasel</option>
+          <option value="986">yellow lady's slipper, yellow lady-slipper, Cypripedium calceolus, Cypripedium parviflorum</option>
+          <option value="688">oscilloscope, scope, cathode-ray oscilloscope, CRO</option>
+          <option value="55">green snake, grass snake</option>
+        </select>
+      </div>
+      <div>
+        <figure class="image is-fullwidth">
+          <img id="imagenet1ImgTop" src="imgs/imagenet-top-class186.jpg">
+        </figure>
+        <figure class="image is-fullwidth">
+          <img id="imagenet1ImgHist" src="imgs/imagenet-hist-class186.svg">
+        </figure>
+        <figure class="image is-fullwidth">
+          <img id="imagenet1ImgBot" src="imgs/imagenet-bot-class186.jpg">
+        </figure>
+      </div>
+      
+      <h2 class="title is-5 mb-2 mt-6">100 random classes</h2>
+      <div class="select" onchange="change_image_url('imagenet2')">
+        <select id="imagenet2Sel">
+          <option value="23">vulture</option>
+          <option value="27">eft</option>
+          <option value="39">common iguana, iguana, Iguana iguana</option>
+          <option value="51">triceratops</option>
+          <option value="66">horned viper, cerastes, sand viper, horned asp, Cerastes cornutus</option>
+          <option value="76">tarantula</option>
+          <option value="84">peacock</option>
+          <option value="86">partridge</option>
+          <option value="99">goose</option>
+          <option value="106">wombat</option>
+          <option value="107">jellyfish</option>
+          <option value="111">nematode, nematode worm, roundworm</option>
+          <option value="115">sea slug, nudibranch</option>
+          <option value="127">white stork, Ciconia ciconia</option>
+          <option value="133">bittern</option>
+          <option value="135">limpkin, Aramus pictus</option>
+          <option value="137">American coot, marsh hen, mud hen, water hen, Fulica americana</option>
+          <option value="165">black-and-tan coonhound</option>
+          <option value="183">Kerry blue terrier</option>
+          <option value="189">Lakeland terrier</option>
+          <option value="207">golden retriever</option>
+          <option value="219">cocker spaniel, English cocker spaniel, cocker</option>
+          <option value="226">briard</option>
+          <option value="228">komondor</option>
+          <option value="231">collie</option>
+          <option value="240">Appenzeller</option>
+          <option value="271">red wolf, maned wolf, Canis rufus, Canis niger</option>
+          <option value="274">dhole, Cuon alpinus</option>
+          <option value="284">Siamese cat, Siamese</option>
+          <option value="286">cougar, puma, catamount, mountain lion, painter, panther, Felis concolor</option>
+          <option value="287">lynx, catamount</option>
+          <option value="297">sloth bear, Melursus ursinus, Ursus ursinus</option>
+          <option value="306">rhinoceros beetle</option>
+          <option value="309">bee</option>
+          <option value="318">lacewing, lacewing fly</option>
+          <option value="322">ringlet, ringlet butterfly</option>
+          <option value="336">marmot</option>
+          <option value="346">water buffalo, water ox, Asiatic buffalo, Bubalus bubalis</option>
+          <option value="359">black-footed ferret, ferret, Mustela nigripes</option>
+          <option value="366">gorilla, Gorilla gorilla</option>
+          <option value="369">siamang, Hylobates syndactylus, Symphalangus syndactylus</option>
+          <option value="370">guenon, guenon monkey</option>
+          <option value="385">Indian elephant, Elephas maximus</option>
+          <option value="401">accordion, piano accordion, squeeze box</option>
+          <option value="406">altar</option>
+          <option value="408">amphibian, amphibious vehicle</option>
+          <option value="413">assault rifle, assault gun</option>
+          <option value="415">bakery, bakeshop, bakehouse</option>
+          <option value="418">ballpoint, ballpoint pen, ballpen, Biro</option>
+          <option value="423">barber chair</option>
+          <option value="453">bookcase</option>
+          <option value="469">caldron, cauldron</option>
+          <option value="472">canoe</option>
+          <option value="476">carousel, carrousel, merry-go-round, roundabout, whirligig</option>
+          <option value="478">carton</option>
+          <option value="481">cassette</option>
+          <option value="483">castle</option>
+          <option value="485">CD player</option>
+          <option value="486">cello, violoncello</option>
+          <option value="507">combination lock</option>
+          <option value="521">Crock Pot</option>
+          <option value="528">dial telephone, dial phone</option>
+          <option value="530">digital clock</option>
+          <option value="536">dock, dockage, docking facility</option>
+          <option value="554">fireboat</option>
+          <option value="565">freight car</option>
+          <option value="568">fur coat</option>
+          <option value="569">garbage truck, dustcart</option>
+          <option value="572">goblet</option>
+          <option value="577">gong, tam-tam</option>
+          <option value="578">gown</option>
+          <option value="587">hammer</option>
+          <option value="608">jean, blue jean, denim</option>
+          <option value="612">jinrikisha, ricksha, rickshaw</option>
+          <option value="619">lampshade, lamp shade</option>
+          <option value="634">lumbermill, sawmill</option>
+          <option value="647">measuring cup</option>
+          <option value="651">microwave, microwave oven</option>
+          <option value="656">minivan</option>
+          <option value="658">mitten</option>
+          <option value="668">mosque</option>
+          <option value="703">park bench</option>
+          <option value="720">pill bottle</option>
+          <option value="725">pitcher, ewer</option>
+          <option value="732">Polaroid camera, Polaroid Land camera</option>
+          <option value="749">quill, quill pen</option>
+          <option value="755">radio telescope, radio reflector</option>
+          <option value="773">saltshaker, salt shaker</option>
+          <option value="785">seat belt, seatbelt</option>
+          <option value="788">shoe shop, shoe-shop, shoe store</option>
+          <option value="798">slide rule, slipstick</option>
+          <option value="807">solar dish, solar collector, solar furnace</option>
+          <option value="808">sombrero</option>
+          <option value="815">spider web, spider's web</option>
+          <option value="816">spindle</option>
+          <option value="824">stole</option>
+          <option value="829">streetcar, tram, tramcar, trolley, trolley car</option>
+          <option value="832">stupa, tope</option>
+          <option value="847">tank, army tank, armored combat vehicle, armoured combat vehicle</option>
+          <option value="855">thimble</option>
+        </select>
+      </div>
+      <div>
+        <figure class="image is-fullwidth">
+          <img id="imagenet2ImgTop" src="imgs/imagenet-top-class23.jpg">
+        </figure>
+        <figure class="image is-fullwidth">
+          <img id="imagenet2ImgHist" src="imgs/imagenet-hist-class23.svg">
+        </figure>
+        <figure class="image is-fullwidth">
+          <img id="imagenet2ImgBot" src="imgs/imagenet-bot-class23.jpg">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  </body>
+</html>
