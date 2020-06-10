@@ -1,5 +1,7 @@
 # Introduction
 
+Paper	&bull; [Project Website](https://pluskid.github.io/structural-regularity/)
+
 We demonstrate the held out training algorithm and c-score estimation procedure 
 with an example on MNIST. The c-score estimation on larger and more challenging datasets
 (CIFAR / ImageNet) are essentially the same as this example shows, except that extra infrastructures
