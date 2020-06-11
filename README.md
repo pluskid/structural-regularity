@@ -1,6 +1,11 @@
 # Introduction
 
-[Paper](https://arxiv.org/abs/2002.03206)	&bull; [Project Website](https://pluskid.github.io/structural-regularity/)
+[Paper](https://arxiv.org/abs/2002.03206)	
+&bull; [Project Website](https://pluskid.github.io/structural-regularity/)
+&bull; [C-scores for CIFAR-10](https://pluskid.github.io/structural-regularity/cscores/cifar10-cscores-orig-order.npz)
+&bull; [C-scores for CIFAR-100](https://pluskid.github.io/structural-regularity/cscores/cifar100-cscores-orig-order.npz)
+&bull; [C-scores for ImageNet](https://pluskid.github.io/structural-regularity/cscores/imagenet-cscores-with-filename.npz)
+
 
 We demonstrate the held out training algorithm and c-score estimation procedure 
 with an example on MNIST. The c-score estimation on larger and more challenging datasets
