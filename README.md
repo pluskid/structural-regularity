@@ -1,4 +1,4 @@
-# Introduction
+# Characterizing Structural Regularities of Labeled Data in Overparameterized Models
 
 [Paper](https://arxiv.org/abs/2002.03206)	
 &bull; [Project Website](https://pluskid.github.io/structural-regularity/)
