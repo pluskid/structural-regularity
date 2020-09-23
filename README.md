@@ -1,10 +1,11 @@
 # Characterizing Structural Regularities of Labeled Data in Overparameterized Models
 
 [Paper](https://arxiv.org/abs/2002.03206)	
-&bull; [Project Website](https://pluskid.github.io/structural-regularity/)
+&bull; [Project](https://pluskid.github.io/structural-regularity/)
 &bull; [C-scores for CIFAR-10](https://pluskid.github.io/structural-regularity/cscores/cifar10-cscores-orig-order.npz)
 &bull; [C-scores for CIFAR-100](https://pluskid.github.io/structural-regularity/cscores/cifar100-cscores-orig-order.npz)
 &bull; [C-scores for ImageNet](https://pluskid.github.io/structural-regularity/cscores/imagenet-cscores-with-filename.npz)
+&bull; [Checkpoints](https://github.com/google-research/heldout-influence-estimation)
 
 
 We demonstrate the held out training algorithm and c-score estimation procedure 
