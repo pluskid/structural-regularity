@@ -18,7 +18,7 @@ irrelevant infrastructure code, which could run in reasonable time on a single G
 We also provide pre-computed c-scores on CIFAR-10/CIFAR-100 and ImageNet for people
 who are interested in playing with those datasets.
 
-# Code Structure and Dependency
+## Example Code on MNIST
 
 The demo contains a single python file `mnist.py`, which train multi-layer perceptrons on MNIST
 to estimate the C-scores, and plot examples as ranked by the estimated C-scores.
@@ -44,3 +44,17 @@ and 200 runs for each subset ratio, it takes less than 2 hours to run.
 
 Note: `tensorflow-datasets` stores the MNIST examples in a different order
 from the [official MNIST dataset binary](http://yann.lecun.com/exdb/mnist/).
+
+## Pre-computed Scores and Pre-trained Checkpoints
+
+We provide pre-computed C-score for download. The files are in Numpy's data format exported via `numpy.savez`. Please see
+the [project website](https://pluskid.github.io/structural-regularity/) for detailed description of the file format
+and download links.
+
+Pre-trained model checkpoints can be found [here](https://github.com/google-research/heldout-influence-estimation) with
+supportive code to load and run evaluations with those models.
+
+
+## Disclaimer
+
+This is not an officially supported Google product.
