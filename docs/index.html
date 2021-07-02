@@ -16,6 +16,7 @@
     </script>
 
     <link rel="stylesheet" href="bulma.0.9.0.min.css">
+
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script>
       function change_image_url(tag) {
@@ -120,9 +121,11 @@
           <b>Pre-computed C-scores</b>: We provide pre-computed C-score for download below. The files are in Numpy's data format exported via <code>numpy.savez</code>. 
           For CIFAR-10 and CIFAR-100, the exported file contains two arrays <code>labels</code> and <code>scores</code>. Both arrays are stored in the order of training 
           examples as defined by the <a href="https://www.cs.toronto.edu/~kriz/cifar.html">original datasets</a>. The data loading tools provided in some deep learning 
-          library might not be following the original data example orders, so we provided the <code>labels</code> array for easy sanity check of the data ordering.
+          library might not be following the original data example orders, so we provided the <code>labels</code> array for easy sanity check of the data ordering. For ImageNet, please refer to the <a href="#sec-imagenet">ImageNet section</a> below.
         </p>
-      </div>
+        <p><b>For <a href="https://www.tensorflow.org/datasets">TFDS</a> users</b>: because TFDS saves the example id when preparing the dataset (at least for CIFAR), it is possible to remap the exported C-scores to TFDS ordering with the following code snippet:</p>
+        <style>.hljs{display:block;overflow-x:auto;padding:.5em;color:#383a42;}.hljs-comment,.hljs-quote{color:#a0a1a7;font-style:italic}.hljs-doctag,.hljs-keyword,.hljs-formula{color:#a626a4}.hljs-section,.hljs-name,.hljs-selector-tag,.hljs-deletion,.hljs-subst{color:#e45649}.hljs-literal{color:#0184bb}.hljs-string,.hljs-regexp,.hljs-addition,.hljs-attribute,.hljs-meta-string{color:#50a14f}.hljs-built_in,.hljs-class .hljs-title{color:#c18401}.hljs-attr,.hljs-variable,.hljs-template-variable,.hljs-type,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-number{color:#986801}.hljs-symbol,.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-title{color:#4078f2}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:bold}.hljs-link{text-decoration:underline}</style>
+        <pre><code class="hljs python"><span class="hljs-comment"># load the full cifar10 dataset into memory to get the example ids</span><br />data_name = <span class="hljs-string">'cifar10:3.0.2'</span><br />raw_data, info = tfds.load(name=data_name, batch_size=<span class="hljs-number">-1</span>, with_info=<span class="hljs-literal">True</span>,<br />                           as_dataset_kwargs={<span class="hljs-string">'shuffle_files'</span>: <span class="hljs-literal">False</span>})<br />raw_data = tfds.as_numpy(raw_data)<br />trainset_np, testset_np = raw_data[<span class="hljs-string">'train'</span>], raw_data[<span class="hljs-string">'test'</span>]<br /><br /><span class="hljs-comment"># load c-scores in original data order</span><br />cscore_fn = <span class="hljs-string">'/path/to/cifar10-cscores-orig-order.npz'</span><br />cscore_arrays = load_npz(cscore_fn)<br /><br /><span class="hljs-comment"># get example index</span><br /><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_id_to_idx</span><span class="hljs-params">(str_id)</span>:</span><br />  <span class="hljs-keyword">return</span> int(str_id.split(<span class="hljs-string">b'_'</span>)[<span class="hljs-number">1</span>])<br />vec_id_to_idx = np.vectorize(_id_to_idx)<br />trainset_orig_idx = vec_id_to_idx(trainset_np[<span class="hljs-string">'id'</span>])<br /><br /><span class="hljs-comment"># sanity check with labels to make sure that data order is correct</span><br /><span class="hljs-keyword">assert</span> np.all(trainset_np[<span class="hljs-string">'label'</span>] == cscore_arrays[<span class="hljs-string">'labels'</span>][trainset_orig_idx])<br /><br /><span class="hljs-comment"># now this is c-scores in TFDS order</span><br />ordered_cscores = cscore_arrays[<span class="hljs-string">'scores'</span>][trainset_orig_idx]</code></pre>
     </div>
   </section>
   <section class="section">
@@ -313,7 +316,7 @@
     <!-- ImageNet -->
     <div class="container">
       <hr>
-      <h1 class="title is-4 mb-1">ImageNet</h1>
+      <h1 class="title is-4 mb-1" id="sec-imagenet">ImageNet</h1>
       <div class="columns mb-4">
         <div class="column">
           <div class="content">
