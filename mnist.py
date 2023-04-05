@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 import jax.numpy as jnp
 from jax.config import config
 from jax import jit, grad, random
-from jax.experimental import optimizers
-from jax.experimental import stax
-from jax.experimental.stax import Flatten, Dense, Relu, LogSoftmax
+from jax.example_libraries import optimizers
+from jax.example_libraries import stax
+from jax.example_libraries.stax import Flatten, Dense, Relu, LogSoftmax
 
 import tensorflow_datasets as tfds
 
@@ -103,7 +103,7 @@ def subset_train(seed, subset_ratio):
   params = get_params(opt_state)
   trainset_correctness = batch_correctness(
     params, (mnist_data['train_images'], mnist_data['train_labels']))
-  trainset_mask = np.zeros(num_train_total, dtype=np.bool)
+  trainset_mask = np.zeros(num_train_total, dtype=bool)
   trainset_mask[subset_idx] = True
   return trainset_mask, np.asarray(trainset_correctness)
 
@@ -159,7 +159,7 @@ def show_examples(cscores, n_show=10):
   
   
 if __name__ == '__main__':
-  npz_fn = 'cscores.npy'
+  npz_fn = 'mnist-cscores.npy'
   if os.path.exists(npz_fn):
     cscores = np.load(npz_fn)
   else:
